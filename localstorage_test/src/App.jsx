@@ -6,10 +6,12 @@ export const App = () => {
   const [startTime, setStartTime] = useState(0);
   const [endTime, setEndTime] = useState(0);
   const [results, setResults] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   const testStorageLimit = () => {
     const testString = 'a'.repeat(1024); // 1KBのテストデータ
     let i = 0;
+    setIsLoading(true)
     setStartTime(performance.now());
 
     const intervalId = setInterval(() => {
@@ -23,6 +25,7 @@ export const App = () => {
           setStatus(`限界に達しました: ${i} KB`);
           localStorage.clear();
         }
+         setIsLoading(false);
       }
     }, 0);
   };
@@ -48,16 +51,31 @@ export const App = () => {
     }
     setResults(newResults)
   }
+    const renderContent = () => {
+    if (isLoading) {
+      return (
+        <div>
+          <div>読み込み中...</div>
+          <div className="skeleton"></div>
+
+        </div>
+      );
+    } else {
+      return (
+        <div>
+          <button onClick={testStorageLimit}>ストレージ限界テスト開始</button>
+          <div>ステータス: {status}</div>
+          {endTime > 0 && (
+            <div>所要時間: {(endTime - startTime).toFixed(2)} ミリ秒</div>
+          )}
+        </div>
+      );
+    }
+  };
 
   return (
     <>
-      <div>
-        <button onClick={testStorageLimit}>ストレージ限界テスト開始</button>
-        <div>ステータス: {status}</div>
-        {endTime > 0 && (
-          <div>所要時間: {(endTime - startTime).toFixed(2)} ミリ秒</div>
-        )}
-      </div>
+      {renderContent()}
       <div>
         <button onClick={performTest}>パフォーマンステスト開始</button>
         <ul>

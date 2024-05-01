@@ -40,3 +40,22 @@
 .read-the-docs {
   color: #888;
 }
+
+.skeleton {
+  background:#888888;
+  border-radius: 0.5em;
+  display: inline-block;
+  height: 1em;
+  margin: 0.5em;
+  width: 100%;
+  animation: skeleton-animation 1s infinite alternate; /* アニメーションを適用 */
+}
+
+@keyframes skeleton-animation {
+    0% {
+        opacity: 0.2; /* 透明度を低く設定 */
+    }
+    100% {
+        opacity: 0.5; /* 透明度を通常に戻す */
+    }
+}
